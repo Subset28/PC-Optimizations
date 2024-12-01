@@ -1,0 +1,11 @@
+
+XMP is when you put your RAM speed to the speed they were advertised as. If you don't enable XMP, you are hurting your own performance. 
+The thing is, XMP is not overclocking your RAM, either. It is completely safe and everyone recommends using it. 
+I put down how to turn on XMP for MSI and Asus motherboards. If you don't have one of those, then just look it up on YouTube.
+
+---
+
+Videos:
+1. [How to Enable XMP on MSI Motherboard](https://www.youtube.com/watch?v=InsertVideoLink1)
+2. [How to CORRECTLY Enable XMP in Asus Motherboards](https://www.youtube.com/watch?v=InsertVideoLink2)
+
