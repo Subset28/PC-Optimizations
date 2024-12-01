@@ -1,0 +1,6 @@
+
+Optimize gaming settings to reduce background distractions:
+1. Turn OFF Game Bar: Go to Settings > Gaming > Xbox Game Bar and disable it.
+2. Turn OFF Captures: Go to Settings > Gaming > Captures and turn off all capture settings.
+3. Turn ON Game Mode: Go to Settings > Gaming > Game Mode and enable it.
+These steps ensure maximum resources are allocated to your games.

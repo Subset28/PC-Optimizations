@@ -1,0 +1,7 @@
+
+Adjust the appearance and performance of Windows for optimal speed:
+1. Type 'Performance' in the search bar and select 'Adjust the appearance and performance of Windows.'
+2. Select 'Custom' and deselect all except:
+   - Show thumbnails instead of icons.
+   - Smooth edges of screen fonts.
+This will improve performance while maintaining visual clarity.

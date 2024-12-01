@@ -1,0 +1,12 @@
+
+Set these NVIDIA Control Panel 3D settings for maximum gaming performance:
+1. Open NVIDIA Control Panel > Manage 3D Settings > Global Settings.
+2. Apply these settings:
+   - Image Scaling: Off
+   - Ambient Occlusion: Off
+   - Low Latency Mode: Ultra
+   - Max Frame Rate: Off
+   - Power Management Mode: Prefer maximum performance
+   - Texture Filtering - Quality: High performance
+3. Ensure your monitor's refresh rate is set to the highest available.
+These adjustments will ensure smooth and lag-free gaming.

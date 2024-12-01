@@ -1,0 +1,7 @@
+
+Enable these graphics settings to reduce latency and improve performance:
+1. Go to Settings > System > Display > Graphics > Default Graphics Settings.
+2. Turn ON:
+   - Hardware-accelerated GPU scheduling.
+   - Optimizations for windowed games.
+This will enhance gaming responsiveness and minimize input lag.
