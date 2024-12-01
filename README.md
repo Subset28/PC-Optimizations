@@ -30,7 +30,7 @@ Every component has been fine-tuned for **maximum FPS**, **low latency**, and **
   - `TrdrdScL`: Set to 3  
   - `Trfc Ctrl`: 138  
 - **Power Down Enable**: Disabled for enhanced stability.  
-- **xGMI Link Speed and Width**: Custom settings to optimize communication between components.  
+- **xGMI Link Speed and Width**: Custom settings to optimize component communication.  
 - **HDCP Disable**: Improved responsiveness by disabling HDCP on displays.  
 - **Max Pending Interrupts**: Adjusted for faster system responses under load.  
 
@@ -42,7 +42,7 @@ Every component has been fine-tuned for **maximum FPS**, **low latency**, and **
 ### **Gaming-Specific Optimizations**  
 - **Thermal Management**:  
   - Air-cooled **Ryzen 9 3900X** with optimized fan curves to maintain a stable 70°C under heavy loads. 🌬️  
-- **Xbox One X-Like Visuals**: Custom NVIDIA driver tweaks to match the rich, vibrant feel of Xbox visuals in Fortnite 🎮.  
+- **Xbox One X-like Visuals**: Custom NVIDIA driver tweaks to match the rich, vibrant feel of Xbox visuals in Fortnite 🎮.  
 - **Low-Latency Registry Tweaks**: Fine-tuned for smooth responsiveness and ultra-low input lag.  
 
 ---
@@ -82,16 +82,6 @@ Whether you’re an esports competitor or a performance enthusiast, these tweaks
 3. Apply Adjustments: Follow the step-by-step instructions in the ReadMe.txt files provided in each folder.
 4. Experiment and Optimize: Test settings to find the perfect balance for your rig.
 5. Enjoy the Boost: Experience lag-free gaming and faster productivity! 🎉
-
----
-
-## 📸 Screenshots
-
-Take a peek at my FPS counter running buttery smooth at 256Hz for the ultimate low-latency experience! 🔥
-
-## 💬 Feedback & Contributions
-Got a suggestion? Found a new tweak? Feel free to submit a pull request or open an issue!
-Let’s make this the ultimate PC optimization resource for gamers and performance enthusiasts. 🌟
 
 ---
 
