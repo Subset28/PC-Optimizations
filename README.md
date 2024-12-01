@@ -55,7 +55,3 @@ As a **high-ranked FPS gamer**, every millisecond counts. From BIOS tweaks to ov
 Got suggestions or want to share your own tweaks? Drop a comment or submit a pull request! Let’s make this the **ultimate guide** for every PC enthusiast out there. 🚀
 
 ---
-
-## 📸 **Screenshots**
-![My Rig in Action](https://placehold.co/600x400)  
-Check out my FPS counter running buttery smooth at **256Hz**! 🔥
