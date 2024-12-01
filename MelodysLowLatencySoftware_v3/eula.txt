@@ -1,0 +1,2 @@
+﻿accept=true
+amdaccept=true

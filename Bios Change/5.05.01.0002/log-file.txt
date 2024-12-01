@@ -1,0 +1,66 @@
+
+------------------------------------------------------------------------------
+|                       AMISCE Utility. Ver 5.05.01.0002                     |
+|               Copyright (c) 2021 AMI. All rights reserved.                 |
+------------------------------------------------------------------------------
+
+Warning in line 2237
+Missing Current Setting "*"
+
+Warning in line 7902
+Missing Current Setting "*"
+
+Warning in line 7930
+Missing Current Setting "*"
+
+Warning in line 7947
+Missing Current Setting "*"
+
+Warning in line 7964
+Missing Current Setting "*"
+
+Warning in line 7981
+Missing Current Setting "*"
+
+Warning in line 7998
+Missing Current Setting "*"
+
+Warning in line 8015
+Missing Current Setting "*"
+
+Warning in line 8032
+Missing Current Setting "*"
+
+Warning in line 8049
+Missing Current Setting "*"
+
+Warning in line 8066
+Missing Current Setting "*"
+
+Warning in line 8083
+Missing Current Setting "*"
+
+Warning in line 8100
+Missing Current Setting "*"
+
+Warning in line 8117
+Missing Current Setting "*"
+WARNING : Value for control (Adjust VTT MEM Value) not updated as the value/defaults specified doesn't reach the minimum range (113).
+Warning : Unmatched question... prompt: Max CPU Boost Clock Override,Token:72
+Warning : Unmatched question... prompt: Fan select button group Main page,Token:28f2
+Warning : Unmatched question... prompt: UiDB DragDropFrame Group 01,Token:28f4
+Warning : Unmatched question... prompt: UiDB DragDropFrame Group 02,Token:28f5
+Warning : Unmatched question... prompt: UiDB DragDropFrame Group 03,Token:28f6
+Warning : Unmatched question... prompt: UiDB DragDropFrame Group 04,Token:28f7
+Warning : Unmatched question... prompt: UiDB DragDropFrame Group 05,Token:28f8
+Warning : Unmatched question... prompt: UiDB DragDropFrame Group 06,Token:28f9
+Warning : Unmatched question... prompt: UiDB DragDropFrame Group 07,Token:28fa
+Warning : Unmatched question... prompt: UiDB DragDropFrame Group 08,Token:28fb
+Warning : Unmatched question... prompt: UiDB DragDropFrame Group 09,Token:28fc
+Warning : Unmatched question... prompt: UiDB DragDropFrame Group 10,Token:28fd
+Warning : Unmatched question... prompt: UiDB DragDropFrame Group 11,Token:28fe
+Warning : Unmatched question... prompt: UiDB DragDropFrame Group 12,Token:28ff
+
+Warning: Power cycle reset required for some of the updated controls.
+
+Script file imported successfully.
