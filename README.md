@@ -19,39 +19,55 @@ Welcome to my **Ultimate PC Optimization Guide**! 🎉 Here, you'll find every t
 
 ## 🔧 **Optimization Highlights**
 ### **BIOS Tweaks**
-- Disabled **NX Mode** (Enable for Valorant 🔫)
-- Tuned **SMT Control** for FPS/latency balancing.
-- Adjusted memory timings, including:
+- **NX Mode**: Disabled (Enable for Valorant 🔫)  
+- **SMT Control**: Tuned for FPS/latency balancing.  
+- **Memory Timings**:
   - `TrdrdScL`: Set to 3
   - `Trfc Ctrl`: 138  
-- Disabled **Power Down Enable** and other power-saving features for maximum stability. 💪
-- Custom **xGMI Link Speed and Width** settings for top-notch communication between components.
+- **Power Down Enable**: Disabled for maximum stability.  
+- **xGMI Link Speed and Width**: Customized for optimal communication between components.  
+- **Additional Settings**:  
+  - `Disable HDCP`: Reduced latency by disabling display features.
+  - `Max Pending Interrupts`: Adjusted for faster response under high loads.
 
 ### **Software & Driver Configurations**
-- NVIDIA Reflex enabled for reduced input lag. 🎯
-- Core Clock Boost: +185 MHz for **RTX 3070 Ti** stability and performance.
-- Disabled unnecessary Windows features (e.g., Defender, telemetry) for reduced background processes. 🛡️
+- **NVIDIA Reflex**: Enabled for reduced input lag. 🎯  
+- **Core Clock Boost**: +185 MHz for **RTX 3070 Ti** stability and performance.  
+- **Windows Features**: Disabled unnecessary background processes (e.g., Defender, telemetry). 🛡️  
 
 ### **Gaming-Specific Optimizations**
-- FPS-first approach for games with ultra-low latency:
-  - Air-cooled **Ryzen 9 3900X** with optimized fan curves for consistent 70°C under load. 🌬️
-  - Custom driver configurations tailored for Xbox-like visuals in Fortnite. 🎮
+- **Thermal Management**: Air-cooled **Ryzen 9 3900X** with optimized fan curves, maintaining 70°C during load. 🌬️  
+- **Xbox-Like Visuals**: Custom driver configurations tailored for Fortnite. 🎮  
+- **Low-Latency Setup**: Registry tweaks and software tools to achieve ultra-smooth gameplay.  
 
 ---
 
 ## 🎮 **Why These Optimizations?**
-As a **high-ranked FPS gamer**, every millisecond counts. From BIOS tweaks to overclocking, these optimizations ensure smooth gameplay, reduced input lag, and peak performance across all games and applications.
+As a **high-ranked FPS gamer**, every millisecond matters. These optimizations are tailored to:
+- Maximize FPS 🎯  
+- Minimize input lag 🔥  
+- Enhance system stability and smoothness ✨  
+
+Whether you're a competitive gamer or a performance enthusiast, these tweaks will make a noticeable difference!
 
 ---
 
 ## 🌟 **How to Use This Guide**
-1. Browse through the sections above for specific tweaks.
-2. Experiment with the settings to find what works best for your rig.
-3. Enjoy the ultimate **smooth, lag-free gaming experience**! ✨
+1. Browse the sections above for specific tweaks and adjustments.  
+2. Backup your system before applying any changes.  
+3. Experiment and find the best combination for your rig.  
+4. Enjoy the ultimate **lag-free gaming and productivity experience**!  
 
 ---
 
 ## 💬 **Feedback & Contributions**
-Got suggestions or want to share your own tweaks? Drop a comment or submit a pull request! Let’s make this the **ultimate guide** for every PC enthusiast out there. 🚀
+Got suggestions, feedback, or tweaks of your own?  
+Feel free to drop a comment or submit a pull request. Together, we can create the **ultimate guide for PC enthusiasts**! 🚀  
+
+---
+
+## 📸 **Screenshots**
+![My Rig in Action](https://placehold.co/600x400)  
+Take a peek at my FPS counter running buttery smooth at **256Hz**! 🔥  
 
 ---
