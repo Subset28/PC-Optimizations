@@ -90,12 +90,3 @@ These tweaks are tailored for my setup and may not work universally. Always proc
 
 ⭐ If this guide helped you, don’t forget to star the repository and share it with others!
 Enjoy your optimized PC experience! ✨
-
----
-
-
-### How to Use:
-- Copy the above markdown and paste it directly into your `README.md` file.  
-- It’s formatted and styled to look great on GitHub and ensures readability.  
-
-Let me know if you’d like further refinements or enhancements! 🚀
