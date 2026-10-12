@@ -28,9 +28,14 @@ Priorities used: games `High` (Valorant `Real time` by user choice), most backgr
 
 ## Things that went wrong (so you don't repeat them)
 
-1. **Don't hard-pin `audiodg.exe`.** After pinning the Windows audio engine at boot it hung (most likely the pin; not proven). Fortnite then froze at
-   `FAudioMixerWasapiRenderStream::InitializeHardware` on the loading screen and the audio service wouldn't stop.
-   Removing the pin and killing `audiodg` cleared it. If you want audio helpers off the game's cores, use a *CPU set* (soft), and test.
+1. **Be careful hard-pinning `audiodg.exe` (cause not proven).** After a reboot with `audiodg.exe` hard-pinned by a
+   rule, Fortnite froze on the loading screen at `FAudioMixerWasapiRenderStream::InitializeHardware`, and the
+   Windows Audio service hung while stopping. Killing `audiodg` (so Windows restarted it with default settings)
+   and removing the rule cleared it. **That was a single event, not a controlled test:** the pin and a USB
+   interrupt-affinity change were both active at the time of the freeze, and the USB change stayed active
+   when the game later loaded fine. That points away from the USB change, but a random hung audio engine after
+   boot isn't ruled out either. If you want audio helpers off the game's cores, use a *CPU set* (soft) and test
+   one change at a time.
 2. **Don't leave input-path processes at Idle priority.** `ctfmon.exe`, `textinputhost.exe`, `searchhost.exe` and
    `startmenuexperiencehost.exe` at Idle starve while a game runs: typing in the Start menu search stops working.
 3. **Two config files.** The boot-time engine (`ProcessGovernor.exe`, run by a scheduled task) reads

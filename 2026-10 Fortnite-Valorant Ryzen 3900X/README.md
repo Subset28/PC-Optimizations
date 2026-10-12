@@ -83,7 +83,13 @@ gaming power plan with core parking off and USB selective suspend / PCIe link po
   spikes to ~58 ms). Nothing on the PC changes that.
 - **Placebo tweaks skipped on purpose:** mouse/keyboard queue sizes, AFD UDP threshold, disabling the HPET device,
   Fortnite `Engine.ini` console variables (Easy Anti-Cheat risk).
-- **Process Lasso pitfalls** (stale boot config, `audiodg` pin hang, Idle priority on input processes) are in
+- **One unexplained freeze.** After the reboot that applied the BIOS change and the USB interrupt pinning, Fortnite froze
+  on the loading screen while opening the audio device, and the Windows Audio service hung while stopping. Killing
+  `audiodg.exe` fixed it. Two changes were active at that moment (a Process Lasso hard-pin on `audiodg.exe` and the USB
+  interrupt move), and the root cause was **not isolated**. The USB change stayed active when the game later loaded
+  fine, which makes it the weaker suspect, but one event proves nothing. If you copy this setup and hit the same freeze,
+  test one change at a time. Use `scripts/undo-interrupt-affinity.ps1` to rule the USB change out.
+- **Process Lasso pitfalls** (stale boot config, Idle priority on input processes, the `audiodg` pin) are in
   `process-lasso/README.md`.
 
 ## Measuring
