@@ -1,0 +1,5 @@
+Windows Registry Editor Version 5.00
+
+; Keep kernel and drivers in RAM (never page them out). Needs plenty of RAM (32 GB here).
+[HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Control\Session Manager\Memory Management]
+"DisablePagingExecutive"=dword:00000001

@@ -1,0 +1,8 @@
+Windows Registry Editor Version 5.00
+
+; Back to Windows default. Run:  bcdedit /set hypervisorlaunchtype auto   and reboot.
+[HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Control\DeviceGuard]
+"EnableVirtualizationBasedSecurity"=-
+
+[HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Control\DeviceGuard\Scenarios\HypervisorEnforcedCodeIntegrity]
+"Enabled"=-

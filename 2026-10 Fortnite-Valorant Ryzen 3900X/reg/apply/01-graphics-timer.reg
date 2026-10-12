@@ -1,0 +1,9 @@
+Windows Registry Editor Version 5.00
+
+; Hardware-accelerated GPU scheduling (HAGS) on
+[HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Control\GraphicsDrivers]
+"HwSchMode"=dword:00000002
+
+; Honour per-process timer-resolution requests globally (1 ms timer while a game asks for it)
+[HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Control\Session Manager\kernel]
+"GlobalTimerResolutionRequests"=dword:00000001
