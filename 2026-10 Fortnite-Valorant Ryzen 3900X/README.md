@@ -43,6 +43,9 @@ Caveats, stated plainly:
 | 9 | BIOS: **CPU Boost Clock Override** Disabled -> Enabled | `bios/change-boost-override-only.txt` | re-import your own original export |
 | 10 | Bloat removed: PC Manager, Phone Link, Cross Device, Edge Game Assist, Adobe notifier | `Get-AppxPackage <name> \| Remove-AppxPackage` | reinstall from Store |
 | 11 | Fortnite: grass off, true fullscreen, frame cap 240 | in-game / `GameUserSettings.ini` | in-game |
+| 12 | RTSS uninstalled; Afterburner removed from startup (measured interrupt source) | RTSS `Uninstall.exe`, Task Scheduler | reinstall |
+| 13 | GPU overclock returned to stock (game is CPU-bound; ran hotter, needed an extra tool) | Afterburner startup profile zeroed | re-apply your profile |
+| 14 | Process Lasso: input processes (`ctfmon`, `textinputhost`, `searchhost`) taken off Idle priority so typing works with a game open | Process Lasso UI | re-add rule |
 
 Already tuned beforehand (verified, no change needed): NIC power saving/offloads off, Nagle off (`TcpAckFrequency=1`,
 `TCPNoDelay=1`), receive coalescing off, Cloudflare DNS, MPO off (`OverlayTestMode=5`), `Win32PrioritySeparation=38`,
@@ -68,8 +71,10 @@ gaming power plan with core parking off and USB selective suspend / PCIe link po
 4. **Verify** by exporting again and diffing against the original: only that option (plus the header/checksum) should differ.
 5. This file is for a MSI B450 Gaming Plus Max BIOS. Tokens/offsets are board- and BIOS-specific. Do not import it on
    a different board. Recovery if anything misbehaves: clear CMOS, boot, re-import your original export.
-6. Not applied yet (prepared): Power Supply Idle Control -> Typical Current Idle, DF C-states -> Disabled, and the
-   biggest remaining lever on Zen 2: DDR4-3600 with a matching Infinity Fabric clock (do that by hand in the BIOS).
+6. Not applied: Power Supply Idle Control -> Typical Current Idle, DF C-states -> Disabled. Memory timings and DDR4-3600 with a matching
+   Infinity Fabric clock are the biggest remaining lever on Zen 2: **do those by hand in the BIOS menu**. SCEWIN stored memory timing
+   values on this board but they were never applied (see `bios/README.md`).
+7. Read `bios/README.md` before importing anything: it has the recovery procedure and the mistake to avoid (tokens repeat, so match name + token + offset).
 
 ## Findings worth knowing
 
@@ -92,11 +97,47 @@ gaming power plan with core parking off and USB selective suspend / PCIe link po
 - **Process Lasso pitfalls** (stale boot config, Idle priority on input processes, the `audiodg` pin) are in
   `process-lasso/README.md`.
 
+## Stutter investigation (what I measured, not what I assumed)
+
+Capture (uncapped Fortnite, ~24k frames): median frame 3.58 ms, p99 6.9 ms, **187 spikes over 7 ms (about 2 per second)**, plus one 212 ms hitch.
+Every one of those spikes was the game's own CPU thread running long (20-35 ms); the GPU was never the cause (about 1.7 ms of GPU
+work per frame vs about 3.4 ms of CPU). Presentation was already ideal (Independent Flip on every frame, input-to-photon median 1.3 ms).
+Capping at 240 gave visibly steadier frame times than running uncapped.
+
+- Windows reported Fortnite's CPU set as exactly cores 2-11, but one hot game thread still ran on a core outside it. That is
+  the engine setting its own thread affinity, which a soft CPU set and Process Lasso can't override.
+- **Synthetic test** (`scripts/hitch-test.ps1`): a spin-loop thread pinned to a game core counts how often it gets interrupted.
+  Interruptions above 100 us per 15 s: baseline 0-3 (noise up to about 130 on some runs), **FanControl 829-1,372**, **MSI Afterburner 232-335**,
+  Wallpaper Engine 86, NVIDIA Broadcast 0. All were under 0.5 ms, so they add frame-time jitter but cannot explain 20-35 ms stalls.
+  Trimming FanControl's sensor modules or slowing Afterburner's polling did not help, so I reverted both.
+- Actions taken from that: RTSS uninstalled, Afterburner removed from startup. Fan control stays with FanControl; the cost is a
+  trade-off the owner chose (fans under one tool vs a small jitter). Setting curves in the BIOS and closing FanControl while gaming would remove it.
+- A GPU overclock (+175 MHz core, +750 MHz memory, raised voltage and power limit, custom V/F curve) was **returned to stock**: both games are CPU-bound,
+  so it bought no frames, and it ran the card hotter and needed an extra tool running. The overclock persists after Afterburner exits,
+  until a reboot or driver reset.
+- The remaining hitches are the engine's own main-thread work. The most likely lever left is memory latency (see below).
+
+## Memory (Micron Rev.E 3200 CL16 x4, single-rank)
+
+ZenTimings showed XMP active (1.35 V, CL16-18-18-36) with **loose motherboard-default secondary timings**
+(tRFC 560 / 350 ns, tREFI 12480, tFAW 34, tRC 74, tRRDL 8, tWTRL 12, Gear Down on). Rev.E is a good tuning die, so tighter secondaries at 3200,
+then 3466/3600 with FCLK 1800, is the next real lever. Four sticks (two per channel) make the higher speeds harder than two. Test with
+TestMem5 (anta777 "Absolut" config) and check Windows' WHEA events. **Set these by hand in the BIOS menu** (see `bios/README.md` for why SCEWIN didn't work).
+Not done yet.
+
+## Tools worth having
+
+ZenTimings (live memory timings/voltage/FCLK), TestMem5 (memory stress), PresentMon (frame data). Download from each project's official
+GitHub release and verify the checksum when one is published.
+
 ## Measuring
 
 - `scripts/fps-go.ps1` (admin PowerShell): checks the state above, runs a single-thread boost test, then captures 60 s
   of the running game with PresentMon and prints average / 1% / 0.1% lows, share of frames >= 240 fps, and ping.
-- `scripts/fps-watch.ps1`: leave it running hidden. It waits for Fortnite or Valorant, lets the match run 3 minutes,
-  captures 90 s and appends the result to `fps-watch-results.txt` in your profile folder.
+- `scripts/fps-watch.ps1`: leave it running hidden. While Fortnite or Valorant runs, it captures repeated 60 s windows and appends one line per window
+  to `fps-watch-results.txt` in your profile folder. Each line is tagged `MENU` (flat lobby cap), `LOADING/LOW` or `MATCH`, and includes median frame time,
+  the count of frames over 2x and 3x the median ("stutters"), the worst frame, and RAM used/committed. Only trust `MATCH` lines.
+  (An earlier version captured 3 minutes after launch, which landed in the lobby and produced a misleading result.)
   PresentMon needs admin rights or membership in the **Performance Log Users** group (sign out/in after adding yourself).
+- `scripts/hitch-test.ps1`: synthetic interference test (see Stutter investigation). `-Only "FanControl"` tests a single tool.
 - Capture in a real match, not the lobby, and lift or keep the frame cap consistently between runs.
