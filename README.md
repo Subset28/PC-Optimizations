@@ -85,6 +85,12 @@ Whether you’re an esports competitor or a performance enthusiast, these tweaks
 
 ---
 
+## 🆕 October 2026: Fortnite + Valorant 240 Hz pass
+
+A fully documented, reversible tuning pass with `.reg` files + undo files, scripts, Process Lasso layout, a verified one-setting BIOS change and before/after numbers: **[2026-10 Fortnite-Valorant Ryzen 3900X](./2026-10%20Fortnite-Valorant%20Ryzen%203900X/README.md)**.
+
+---
+
 ## ⚠️ Disclaimer
 These tweaks are tailored for my setup and may not work universally. Always proceed with caution, and back up your system before making changes. Use at your own risk.
 

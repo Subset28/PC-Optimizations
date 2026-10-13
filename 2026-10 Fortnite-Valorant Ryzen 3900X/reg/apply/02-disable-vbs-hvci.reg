@@ -1,0 +1,9 @@
+Windows Registry Editor Version 5.00
+
+; Virtualization-based security and memory integrity (HVCI) OFF. Security trade-off - see README.
+; Also run:  bcdedit /set hypervisorlaunchtype off   (scripts/apply-boot-and-services.ps1)
+[HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Control\DeviceGuard]
+"EnableVirtualizationBasedSecurity"=dword:00000000
+
+[HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Control\DeviceGuard\Scenarios\HypervisorEnforcedCodeIntegrity]
+"Enabled"=dword:00000000
