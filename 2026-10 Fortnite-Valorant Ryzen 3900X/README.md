@@ -122,8 +122,12 @@ Capping at 240 gave visibly steadier frame times than running uncapped.
 ZenTimings showed XMP active (1.35 V, CL16-18-18-36) with **loose motherboard-default secondary timings**
 (tRFC 560 / 350 ns, tREFI 12480, tFAW 34, tRC 74, tRRDL 8, tWTRL 12, Gear Down on). Rev.E is a good tuning die, so tighter secondaries at 3200,
 then 3466/3600 with FCLK 1800, is the next real lever. Four sticks (two per channel) make the higher speeds harder than two. Test with
-TestMem5 (anta777 "Absolut" config) and check Windows' WHEA events. **Set these by hand in the BIOS menu** (see `bios/README.md` for why SCEWIN didn't work).
-Not done yet.
+TestMem5 (anta777 "Absolut" config) and check Windows' WHEA events.
+
+**Status: not done.** An attempt to apply tFAW 24 / tRC 58 / tRFC 440 through SCEWIN (every duplicate copy set, gating switches checked, XMP
+switched off to test an override) wrote the values but the board never applied them, so everything was reverted. Details, dead ends and the
+plan for the next attempt (do it from the BIOS menu, with a saved profile and phone photos first) are in `bios/README.md`.
+A bad BIOS change also forced a CMOS clear once, which wiped the firmware TPM and broke the Windows Hello PIN; the fix is documented there too.
 
 ## Tools worth having
 

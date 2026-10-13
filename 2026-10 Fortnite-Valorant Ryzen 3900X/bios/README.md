@@ -35,6 +35,50 @@
   its own Auto/Manual switch. A value in a copy whose switch is on Auto is only a stored placeholder.
 - A readback diff is the safety net: if it shows anything beyond the intended lines, stop and restore from your export.
 
+## Memory-timing experiment: full results (2026-10-12)
+
+Goal: tighten tFAW 34 -> 24, tRC 74 -> 58, tRFC 560 -> 440 on Micron Rev.E kit at DDR4-3200 (4 single-rank sticks).
+**Outcome: the values were written and kept, but never applied.** ZenTimings still read 34 / 74 / 560 after every boot. Everything was reverted.
+
+What was tried, in order, and what each ruled out:
+
+| Attempt | Result |
+|---|---|
+| Wrote the newer-style entries (one pair per channel) | Stored, ignored |
+| Switched the legacy "Ctrl" entries to Manual and set hex values | Stored, ignored |
+| Disabled Memory Fast Boot (to force retraining) | No change |
+| Set **every** copy at once (7 for tFAW, 7 for tRC, 9 for tRFC, matched on name + token + offset) | Stored, ignored |
+| Turned the A-XMP profile **off** to see if it was overriding | **No change in any timing, not even the other secondaries**, so XMP is not what supplies them |
+
+Things worth remembering from this:
+
+- **There are several copies of each timing, and only some are live.** In this export there are three groups of memory entries (around
+  offsets 4B0-4F8, 5F4-630 and 6D4-712) plus two older legacy sets. In "Link" timing mode the first group is the one the BIOS menu edits.
+  Groups two and three are per-channel pages. Setting all of them is the safe way to be consistent.
+- **Some labels are live readouts.** A label such as `tFAW   34` shows the value the memory is running **right now**, and it changes on
+  every boot. SCEWIN refuses to import an entry whose label doesn't match the current one (`Unmatched question... prompt: tFAW 28`).
+  If you rebuild an import file, copy those labels from an export taken **after the last boot**, not before.
+- **SCEWIN does work for other things** on this board: DRAM frequency, XMP selection, PBO limits, boost override, voltages, boot mode.
+  A full restore after a CMOS clear took memory from 2667 to 3200 MT/s. Only the memory *timing* fields stayed inert.
+- Gating switches that were checked and were all correct: `DRAM Timing Mode` = Link, `Memory Try It` = Disabled, `DRAM Latency Enhance`
+  = Disabled, `Overclock` = Enabled, `OC Mode` = Customized, `Memory Fast Boot` = Disabled during the test.
+- **Not proven:** the likely reason is that the board only turns timing fields into a live memory configuration when they are saved from the BIOS
+  menu. A no-edit "open the menu and Save & Exit" test is the next thing to try; it has not been done yet.
+
+### Next attempt (plan)
+
+1. Take phone photos of the OC pages, and save an OC profile in the BIOS if it offers one.
+2. Do the changes in the BIOS menu, one timing at a time, and check ZenTimings after each. Never touch `DRAM Latency Enhance`.
+3. Stress test with TestMem5 (anta777 "Absolut"), several full cycles, and check Windows' WHEA hardware-error log.
+4. tREFI is **not exposed** in this BIOS (there is no entry in the export), so don't plan around it.
+
+### What a CMOS clear costs
+
+If a bad change forces a CMOS clear: re-import your saved export (`SCEWIN_64.exe /I /S`), do a full power cycle, and expect two side effects.
+Windows Hello PINs stop working because the clear also wipes the firmware TPM. The fix is to move the stale container aside
+(stop `NgcSvc`/`NgcCtnrSvc`, rename `C:\Windows\ServiceProfiles\LocalService\AppData\Local\Microsoft\Ngc` after taking ownership, restart the services)
+and set a new PIN. Secure Boot and the UEFI-only/CSM-off boot settings also reset, which matters for games with kernel anti-cheat.
+
 ## What was verified
 
 - `CPU Boost Clock Override` reads `Enabled` in a fresh export, and nothing else differs from the original export
