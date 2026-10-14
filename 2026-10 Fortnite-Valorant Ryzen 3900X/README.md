@@ -28,6 +28,23 @@ Caveats, stated plainly:
 - Valorant has only an older baseline (avg 228-239, 1% low ~138). It hasn't been re-captured yet.
 - The biggest single win by far was removing a Process Lasso power-plan rule (108 -> 188). Everything after is smaller.
 
+**After the hypervisor was finally turned off** (see the section below), six consecutive 60-second windows of a **live Battle Royale match**
+(uncapped, so not directly comparable with the Creative-map column above):
+
+| Window | Avg | 1% low | 0.1% low | Stutters (>2x median) | Big (>3x) | Worst frame |
+|---|---|---|---|---|---|---|
+| 1 | 269 | 125 | 73 | 256 | 45 | 17 ms |
+| 2 | 273 | 146 | 105 | 140 | 3 | 11 ms |
+| 3 | 256 | 110 | 30 | 257 | 129 | 34 ms |
+| 4 | 312 | 30 | 23 | 655 | 478 | 100 ms |
+| 5 | 229 | 47 | 30 | 559 | 374 | 34 ms |
+| 6 | 253 | 148 | 108 | 65 | 0 | 11 ms |
+
+Median frame time over the six windows was 3.44 ms (earlier Creative baseline 3.58 ms, about 4% faster). The best windows (2 and 6) match or beat the
+baseline (1% low 146-148, almost no big stutters); windows 4 and 5 look like match transitions or heavy scenes. **Treat this as noisy and
+inconclusive**: different scene every minute, and the capture tool cannot tell a loading screen from gameplay. It is not evidence that the
+hypervisor change helped or hurt.
+
 ## What was changed
 
 | # | Change | Where | Undo |
@@ -46,6 +63,8 @@ Caveats, stated plainly:
 | 12 | RTSS uninstalled; Afterburner removed from startup (measured interrupt source) | RTSS `Uninstall.exe`, Task Scheduler | reinstall |
 | 13 | GPU overclock returned to stock (game is CPU-bound; ran hotter, needed an extra tool) | Afterburner startup profile zeroed | re-apply your profile |
 | 14 | Process Lasso: input processes (`ctfmon`, `textinputhost`, `searchhost`) taken off Idle priority so typing works with a game open | Process Lasso UI | re-add rule |
+| 15 | Hypervisor / VBS **actually** off (the registry flag and `hypervisorlaunchtype` alone were not enough) | `scripts/disable-hypervisor-fully.ps1` | `scripts/undo-hypervisor.ps1` |
+| 16 | Windows Hello PIN broke as a side effect, fixed by moving the stale container aside | `scripts/reset-hello-container.ps1` | n/a |
 
 Already tuned beforehand (verified, no change needed): NIC power saving/offloads off, Nagle off (`TcpAckFrequency=1`,
 `TCPNoDelay=1`), receive coalescing off, Cloudflare DNS, MPO off (`OverlayTestMode=5`), `Win32PrioritySeparation=38`,
@@ -97,6 +116,30 @@ gaming power plan with core parking off and USB selective suspend / PCIe link po
 - **Process Lasso pitfalls** (stale boot config, Idle priority on input processes, the `audiodg` pin) are in
   `process-lasso/README.md`.
 
+## The hypervisor that wouldn't turn off
+
+Symptom: `(Get-CimInstance Win32_ComputerSystem).HypervisorPresent` stayed **True** and VBS status stayed **2 (running)** even though
+`reg/apply/02-disable-vbs-hvci.reg` was applied, `hypervisorlaunchtype` was Off and Memory Integrity was off.
+A running hypervisor puts nested address translation under every memory access, which is why it was worth chasing for a CPU/memory-bound game thread.
+
+What actually kept it on, found one layer at a time:
+
+1. **`isolatedcontext Yes`** in the Windows 11 boot entry (loads the secure kernel) and `vsmlaunchtype` unset.
+2. **Windows Hello "Enhanced Sign-in Security"**: `HKLM\SYSTEM\CurrentControlSet\Control\DeviceGuard\Scenarios\WindowsHello\Enabled = 1`
+   keeps VBS and the hypervisor running on its own, even with every other switch off.
+3. **The Virtual Machine Platform feature** was enabled. Disabling it **resets `hypervisorlaunchtype`**, so the value has to be set to Off *again afterwards*
+   (the first attempt silently lost it; a restart showed the hypervisor still running).
+4. A second `isolatedcontext Yes` belongs to the *Resume from Hibernate* boot object and does not matter for a normal boot.
+
+`scripts/disable-hypervisor-fully.ps1` does all of it in the right order, and `scripts/undo-hypervisor.ps1` reverses it. After the change `HypervisorPresent` was False,
+VBS status 0 and `HvHost` stopped. **Use Restart, not Shut down**, to test it (Fast Startup can resume the old session).
+
+Side effects and trade-offs, stated plainly:
+- It removes Enhanced Sign-in Security and VBS-based protections (Hello keys stay TPM-backed). That is a deliberate security trade-off for a dedicated gaming PC.
+- **The Windows Hello PIN stopped working** (the container's keys were protected by the virtualization layer). `scripts/reset-hello-container.ps1` fixes it.
+- WSL2, Windows Sandbox and other hypervisor-based tools stop working. None were installed on this machine.
+- Expected size of the benefit: a few percent at best (median frame 3.58 -> 3.44 ms in the captures above is consistent with that, but the data is noisy).
+
 ## Stutter investigation (what I measured, not what I assumed)
 
 Capture (uncapped Fortnite, ~24k frames): median frame 3.58 ms, p99 6.9 ms, **187 spikes over 7 ms (about 2 per second)**, plus one 212 ms hitch.
@@ -125,7 +168,7 @@ then 3466/3600 with FCLK 1800, is the next real lever. Four sticks (two per chan
 TestMem5 (anta777 "Absolut" config) and check Windows' WHEA events.
 
 **Status: not done.** An attempt to apply tFAW 24 / tRC 58 / tRFC 440 through SCEWIN (every duplicate copy set, gating switches checked, XMP
-switched off to test an override) wrote the values but the board never applied them, so everything was reverted. Details, dead ends and the
+switched off to test an override) wrote the values but the board never applied them, so everything was reverted. Two follow-up tests (DRAM Latency Enhance = Enabled, and a Power Down Enable on/off diagnostic) were also stored but ignored, so on this board SCEWIN reaches DRAM frequency/XMP/voltage but not the other memory-controller settings. Details, dead ends and the
 plan for the next attempt (do it from the BIOS menu, with a saved profile and phone photos first) are in `bios/README.md`.
 A bad BIOS change also forced a CMOS clear once, which wiped the firmware TPM and broke the Windows Hello PIN; the fix is documented there too.
 

@@ -49,6 +49,8 @@ What was tried, in order, and what each ruled out:
 | Disabled Memory Fast Boot (to force retraining) | No change |
 | Set **every** copy at once (7 for tFAW, 7 for tRC, 9 for tRFC, matched on name + token + offset) | Stored, ignored |
 | Turned the A-XMP profile **off** to see if it was overriding | **No change in any timing, not even the other secondaries**, so XMP is not what supplies them |
+| Set **DRAM Latency Enhance = Enabled** on both copies (not the "msi Setting" option), with Memory Fast Boot off | Stored, **no timing changed at all** (tFAW, tRC, tRFC, tREFI, tRRDL, tWTRL all identical), so it is not the missing "apply" switch |
+| Diagnostic: set **Power Down Enable = Enabled** on all 5 copies (a plain on/off controller option that ZenTimings displays) | The BIOS kept Enabled across the reboot, but **ZenTimings still showed PowerDown = Disabled on all four sticks** |
 
 Things worth remembering from this:
 
@@ -58,12 +60,15 @@ Things worth remembering from this:
 - **Some labels are live readouts.** A label such as `tFAW   34` shows the value the memory is running **right now**, and it changes on
   every boot. SCEWIN refuses to import an entry whose label doesn't match the current one (`Unmatched question... prompt: tFAW 28`).
   If you rebuild an import file, copy those labels from an export taken **after the last boot**, not before.
-- **SCEWIN does work for other things** on this board: DRAM frequency, XMP selection, PBO limits, boost override, voltages, boot mode.
-  A full restore after a CMOS clear took memory from 2667 to 3200 MT/s. Only the memory *timing* fields stayed inert.
+- **What SCEWIN does and doesn't apply here (refined by the last two tests):** DRAM frequency, XMP selection and DRAM voltage **do** take effect
+  (a full restore after a CMOS clear took memory from 2667 to 3200 MT/s), and CPU-side settings (PBO limits, boost override) and boot mode stored fine.
+  But **everything else on the memory-controller page is stored and ignored**: the timing numbers, DRAM Latency Enhance, and even a plain
+  Power Down on/off option. So this is not about timing syntax or missing duplicates; the live memory configuration simply isn't rebuilt from SCEWIN writes.
 - Gating switches that were checked and were all correct: `DRAM Timing Mode` = Link, `Memory Try It` = Disabled, `DRAM Latency Enhance`
   = Disabled, `Overclock` = Enabled, `OC Mode` = Customized, `Memory Fast Boot` = Disabled during the test.
-- **Not proven:** the likely reason is that the board only turns timing fields into a live memory configuration when they are saved from the BIOS
-  menu. A no-edit "open the menu and Save & Exit" test is the next thing to try; it has not been done yet.
+- **Not proven:** the likely reason is that the board only turns memory-controller fields into a live memory configuration when they are saved from the BIOS
+  menu. That is a theory, not a measured fact. **Conclusion for now: stop using SCEWIN for memory timings and options** and do them from the BIOS menu
+  (one change at a time, phone photos and a saved OC profile first). That test has not been done yet.
 
 ### Next attempt (plan)
 
