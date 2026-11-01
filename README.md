@@ -104,7 +104,7 @@ PC-Optimizations/
 │   ├── GPU_and_Drivers/                 # nvidiaProfileInspector, NVSlimmer, MSI_util_v3
 │   ├── Kernel_and_Power/                # PowerSettingsExplorer, PowerRun, PolicyPlus, MemReduct
 │   ├── Input_and_USB/                   # HIDUSBF (USB Polling Rate Overclocking)
-│   └── Network_Tools/                   # DNS Optimizer, Network Tweaker, Benchmark Installers
+│   └── Network_Tools/                   # Wi-Fi Speed & Bandwidth Fixer, DNS Optimizer, Network Tweaker
 │
 ├── 03_Guides_and_Documentation/         # 📖 Comprehensive Step-by-Step Manual Guides
 │   ├── Windows_11_Optimization_Guide.md # HAGS, Game Mode, Visual Effects, Storage Sense
@@ -149,6 +149,15 @@ A reboot is required for Windows kernel HAL timers (`disabledynamictick`), CPU q
 
 ## 🆕 **Hardware-Specific Tuning: Ryzen 9 3900X + RTX 3070 Ti (October 2026 Pass)**
 A fully documented, reversible hardware-specific tuning pass with `.reg` files, undo scripts, Process Lasso core layouts, verified BIOS boost override benchmarks, and live PresentMon telemetry: **[Ryzen 3900X Esports Tuning](./01_Esports_Stack/Ryzen_3900X_Oct2026_Tuning/README.md)**.
+
+---
+
+## 📶 **Wi-Fi Speed & Bandwidth Repair Suite (300+ Mbps Fix)**
+Diagnoses and resolves the infamous Windows 10/11 Wi-Fi bottleneck where you pay for 300–1000 Mbps broadband but only receive 8–15 Mbps on Wi-Fi:
+- **Root Causes Fixed:** Unclamping the 64 KB Windows TCP Receive Window (`autotuninglevel=normal`), eliminating Wi-Fi Receive Segment Coalescing (RSC) packet drops, forcing 5 GHz / 6 GHz band preference, disabling adapter power throttling, and removing Delivery Optimization background limits.
+- **Location:** **[`02_Esports_Utilities/Network_Tools/WiFi_Speed_and_Bandwidth_Fixer/`](./02_Esports_Utilities/Network_Tools/WiFi_Speed_and_Bandwidth_Fixer/README.md)**
+- **One-Click Run:** Double-click `Fix-WiFi-Speed.bat` (automatically self-elevates to Administrator).
+
 
 ---
 
