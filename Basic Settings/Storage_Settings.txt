@@ -1,5 +1,0 @@
-
-Turn on Storage Sense to automatically delete temporary files and free up space:
-1. Open Settings > System > Storage.
-2. Enable 'Storage Sense' under Storage Management.
-This keeps your system clean and running efficiently.
