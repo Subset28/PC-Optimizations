@@ -188,3 +188,40 @@ GitHub release and verify the checksum when one is published.
   PresentMon needs admin rights or membership in the **Performance Log Users** group (sign out/in after adding yourself).
 - `scripts/hitch-test.ps1`: synthetic interference test (see Stutter investigation). `-Only "FanControl"` tests a single tool.
 - Capture in a real match, not the lobby, and lift or keep the frame cap consistently between runs.
+
+## Update 2026-11-01: Vanguard CFG, background apps, power throttling
+
+Changes since the October pass, each with an undo.
+
+| # | Change | Where | Undo |
+|---|---|---|---|
+| 17 | **Control Flow Guard ON** (system-wide, plus explicit for `VALORANT-Win64-Shipping.exe`). Vanguard shows `VAN9002` ("requires Control Flow Guard") without it | `scripts/vanguard-cfg.ps1` | `Set-ProcessMitigation -System -Remove -Enable CFG` and `Set-ProcessMitigation -Name VALORANT-Win64-Shipping.exe -Remove` |
+| 18 | Windows **power throttling off** | `reg/apply/06-power-throttling-off.reg` | `reg/undo/06-power-throttling-off.reg` |
+| 19 | Overwolf no longer starts with Windows. It starts only while Valorant runs (hidden) | `scripts/overwolf-on-valorant/` (`install.ps1`) | the printed Run value and `Unregister-ScheduledTask -TaskName 'Overwolf-on-Valorant'` |
+| 20 | MSI Afterburner uninstalled (it was the measured interrupt source in the stutter tests) | Afterburner `Uninstall.exe`, then remove the `MSIAfterburner` task | reinstall |
+
+Notes:
+- The Overwolf watcher is registered to the folder it was installed from. Keep the repo folder in place, or re-run `install.ps1` after moving it.
+- VBScript is not installed on Windows 11 25H2 by default, so the launcher is a `.js` file run by `wscript`. A `.vbs` launcher fails with "There is no script engine".
+- Windows Security (Exploit protection) and the Vanguard popup both report CFG. Changes to CFG only apply to processes started after the change, so restart the game after enabling it.
+- Hypervisor check: after a full restart on 2026-10-23 the hypervisor was still running even with `hypervisorlaunchtype = Off`
+  (the boot log showed "Hypervisor successfully started" and "VBS enabled due to HyperV"). The cause is **not found**. Checked and ruled out:
+  boot entry, Hyper-V/VM Platform features, the Hello VBS key. Not yet checked: VMware Workstation, Core isolation and Memory Integrity UI.
+
+### User-measured result (Fortnite, PresentMon, pre/post restart)
+
+These were run by the repo owner after the changes above. Both are single runs and differ in length, so they are a
+direction, not a proof:
+
+| | Pre-restart | Post-restart |
+|---|---|---|
+| Frames captured | 23,618 (~102 s) | 58,782 (~207 s) |
+| Average fps | 232.7 | 283.9 |
+| Median frame time | 3.87 ms | 3.27 ms |
+| 99th percentile frame time (1% low) | 9.96 ms (100 fps) | 7.62 ms (131 fps) |
+| Frame-time std dev | 4.06 ms | 3.11 ms |
+| Frames over 20 ms | 0.77% | 0.36% |
+| Present mode | 99.8% Independent Flip | 99.9% Independent Flip |
+
+Attribution is not measured. The restart cleared background processes, and the owner's own tuning landed around the same time.
+A fair test: same map, 3 minutes each, same background apps, repeated twice.
