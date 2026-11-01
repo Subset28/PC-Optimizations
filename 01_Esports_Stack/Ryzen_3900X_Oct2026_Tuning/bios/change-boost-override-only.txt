@@ -1,0 +1,17 @@
+// Script File Name : change-boost-override-only.txt
+// Created on 10/11/26
+// AMISCE Utility. Ver 5.05.01.0002
+// Copyright (c) 2021 AMI. All rights reserved.
+// PREPARED, NOT APPLIED. One change only:
+//   CPU Boost Clock Override: Disabled -> Enabled   (your "Max CPU Boost Clock Override" is already 200MHz but inactive)
+// Apply (admin, from the SCEWIN folder):  SCEWIN_64.exe /I /S "<path-to>/change-boost-override-only.txt"
+// Undo: import the full original export nvram-original-20261011-0030.txt, or set it back to Disabled in BIOS.
+HIICrc32= 2A380936
+
+Setup Question	= CPU Boost Clock Override
+Help String	= Increases the maximum CPU frequency that may be automatically achieved by the CPU boost algorithm
+Token	=70	// Do NOT change this line
+Offset	=B6
+Width	=01
+Options	=*[01]Enabled 	// Move "*" to the desired Option
+         [00]Disabled

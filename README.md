@@ -146,7 +146,12 @@ A reboot is required for Windows kernel HAL timers (`disabledynamictick`), CPU q
 
 ---
 
+## 🆕 **Hardware-Specific Tuning: Ryzen 9 3900X + RTX 3070 Ti (October 2026 Pass)**
+A fully documented, reversible hardware-specific tuning pass with `.reg` files, undo scripts, Process Lasso core layouts, verified BIOS boost override benchmarks, and live PresentMon telemetry: **[Ryzen 3900X Esports Tuning](./01_Esports_Stack/Ryzen_3900X_Oct2026_Tuning/README.md)**.
+
+---
+
 ## ⚠️ **Disclaimer**
-These tweaks are rigorously tested and verified for my setup. While every script in the `2026_Esports_Stack` includes automatic backup and restore point creation, always proceed with care. 
+These tweaks are rigorously tested and verified for my setup. While every script in `01_Esports_Stack` includes automatic backup and restore point creation, always proceed with care.
 
 ⭐ **If this repository helped you hit your target FPS or lower your input delay, leave a star and share it with your squad!**

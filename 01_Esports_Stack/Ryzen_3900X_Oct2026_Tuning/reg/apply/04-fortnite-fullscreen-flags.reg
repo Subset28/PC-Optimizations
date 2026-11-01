@@ -1,0 +1,6 @@
+Windows Registry Editor Version 5.00
+
+; Per-user. Edit the path if Fortnite lives elsewhere.
+; Stops Windows from forcing "maximized windowed" so the game can use true flip / exclusive presentation.
+[HKEY_CURRENT_USER\Software\Microsoft\Windows NT\CurrentVersion\AppCompatFlags\Layers]
+"C:\Program Files\Epic Games\Fortnite\FortniteGame\Binaries\Win64\FortniteClient-Win64-Shipping.exe"="~ DISABLEDXMAXIMIZEDWINDOWEDMODE"
