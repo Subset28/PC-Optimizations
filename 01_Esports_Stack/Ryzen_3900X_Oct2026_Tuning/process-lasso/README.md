@@ -48,3 +48,7 @@ Priorities used: games `High` (Valorant `Real time` by user choice), most backgr
    the real game process. Per-game *power plan* switching still works. Valorant's rules do apply.
 6. **Startup plan:** set `StartWithPowerPlan=Balanced` and let Process Lasso switch to your gaming plan when a game
    starts. Energy Saver kicking in after 20 idle minutes is expected.
+7. **CRITICAL: NEVER clamp Unreal Engine 5 (`fortniteclient-win64-shipping.exe`) to fewer CPU sets than its worker thread pool.**
+   Unreal Engine 5 detects 24 logical processors and initializes 22 parallel worker threads (`FQueuedThreadPool`). If you clamp Fortnite to `(2-11)` (10 cores), all 22 worker threads are crammed onto 10 cores, triggering a catastrophic **Lock Convoy during Garbage Collection reachability analysis**. This freezes the `GameThread` for **10.5 to 18.4 seconds** multiple times during a match! Allow the game full access to all cores so GC completes in ~120 ms.
+8. **NEVER set core Windows system services (`rpcss`, `dcomlaunch`, `lsass`) to `Idle` priority.**
+   Degrading RPCSS or DCOM to Idle causes inter-process communication calls from games, audio engines, and input handlers to time out, freezing the application.

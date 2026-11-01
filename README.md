@@ -81,6 +81,7 @@ On dual-CCD processors (Ryzen 9 3900X, 5900X, 7900X, 7950X), cross-die thread mi
 - **Control Flow Guard (CFG) Bypass:** Disabled CFG specifically for `FortniteClient-Win64-Shipping.exe` and `VALORANT-Win64-Shipping.exe`. Removes millions of CPU instruction validation checks per second in Unreal Engine 5.
 - **GPU TDR Crash Prevention:** Set `TdrDelay` and `TdrDdiDelay` to **8 seconds** in `GraphicsDrivers`, completely preventing `DXGI_ERROR_DEVICE_REMOVED` crashes during heavy shader loads.
 - **Cosmetic Streaming Hitching:** In Epic Games Launcher, checking **"Pre-download Streamed Assets"** stops Fortnite from downloading opponents' skins over the internet mid-fight.
+- **Garbage Collection (GC) Lock Convoy Prevention:** Never constrain Unreal Engine 5 processes to a small subset of cores. UE5 spawns 22 worker threads on 24-thread CPUs; restricting it causes GC reachability analysis to stall the GameThread for up to 18.4 seconds. Keep all cores available for the engine thread pool.
 
 ---
 

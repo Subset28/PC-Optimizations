@@ -131,7 +131,7 @@ $deepSettings = @(
     @{ Name = "Processor Boost Mode"; Guid = "be337238-0d82-4146-a960-4f3749d470c7"; Value = 2 },
     @{ Name = "Performance Decrease Policy"; Guid = "40fbefc7-2e9d-4d25-a185-0cfd8574bac6"; Value = 1 },
     @{ Name = "Performance Increase Policy"; Guid = "465e1f50-b610-473a-ab58-00d1077dc418"; Value = 2 },
-    @{ Name = "Autonomous Activity Window"; Guid = "cfeda3d0-7697-4566-a922-a9086cd49dfa"; Value = 0 }
+    @{ Name = "Autonomous Activity Window"; Guid = "cfeda3d0-7697-4566-a922-a9086cd49dfa"; Value = 30000 } # 30ms stable CPPC2 window (eliminates 0-interval frequency thrashing)
 )
 foreach ($s in $deepSettings) {
     powercfg -attributes $subProc $s.Guid -ATTRIB_HIDE 2>$null
