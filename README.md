@@ -50,9 +50,9 @@ Many online optimization scripts use dangerous tweaks (like disabling Driver Sig
 - **Full Compliance:** Every optimization here runs natively within official Microsoft Windows HAL APIs.
 - **Audited State:** UEFI Secure Boot, TPM 2.0, and Kernel Code Integrity remain active and 100% clean. Run `Verify-AntiCheat.ps1` to verify your machine.
 
-### 2. ⚡ The `FPSHEAVEN2026` Power Plan + Dynamic Switching
+### 2. ⚡ The `Blaster Boy 28` Power Plan + Dynamic Switching
 - **The Problem:** Locking all 24 CPU threads at 100% clock speeds 24/7 wastes 40–60W at idle, pushes CPU temps 10–15°C higher, and creates unnecessary fan noise while doing daily tasks.
-- **The Solution:** We implement **Dynamic Energy Switching**. The system idles cool and quiet on **Balanced**. Using Process Lasso's background engine (`processgovernor.exe`), the OS automatically snaps into **`FPSHEAVEN2026`** the millisecond Fortnite or Valorant launches, and drops back down upon exit.
+- **The Solution:** We implement **Dynamic Energy Switching**. The system idles cool and quiet on **Balanced**. Using Process Lasso's background engine (`processgovernor.exe`), the OS automatically snaps into **`Blaster Boy 28`** the millisecond Fortnite or Valorant launches, and drops back down upon exit.
 - **The Plan Customizations:** Core parking minimum active cores locked to **100%**, Processor Boost Mode set to **Aggressive (2)**, PCIe Link State Power Management (ASPM) set to **Off (0)**, and Disk sleep disabled.
 
 ### 3. 🌐 Zero-Ping & Network Stack Engineering
@@ -83,7 +83,7 @@ On dual-CCD processors (Ryzen 9 3900X, 5900X, 7900X, 7950X), cross-die thread mi
 ```
 PC-Optimizations/
 ├── 2026_Esports_Stack/                  # 🔥 The Modernized 2026 Tuning Suite
-│   ├── FPSHEAVEN2026.pow                # Standalone export of the FPSHEAVEN2026 power plan
+│   ├── Blaster_Boy_28.pow               # Standalone export of the Blaster Boy 28 power plan
 │   ├── Apply-EsportsTuning.ps1          # 1-Click automated master tuning script
 │   ├── Verify-AntiCheat.ps1             # Riot Vanguard & EAC compliance audit script
 │   ├── GameConfigs/

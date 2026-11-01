@@ -107,15 +107,15 @@ foreach ($adapter in $adapters) {
 }
 
 # 8. Power Scheme Import & Activation
-Write-Host "`n[8/8] Checking FPSHEAVEN2026 Power Plan..." -ForegroundColor Yellow
-$powFile = Join-Path $PSScriptRoot "FPSHEAVEN2026.pow"
+Write-Host "`n[8/8] Checking Blaster Boy 28 Power Plan..." -ForegroundColor Yellow
+$powFile = Join-Path $PSScriptRoot "Blaster_Boy_28.pow"
 if (Test-Path $powFile) {
-    $existing = powercfg /list | Select-String "FPSHEAVEN2026"
+    $existing = powercfg /list | Select-String "Blaster Boy 28"
     if (-not $existing) {
-        Write-Host "  -> Importing FPSHEAVEN2026 power plan..." -ForegroundColor Cyan
+        Write-Host "  -> Importing Blaster Boy 28 power plan..." -ForegroundColor Cyan
         powercfg -import $powFile
     } else {
-        Write-Host "  -> FPSHEAVEN2026 plan already registered." -ForegroundColor Green
+        Write-Host "  -> Blaster Boy 28 plan already registered." -ForegroundColor Green
     }
 }
 
