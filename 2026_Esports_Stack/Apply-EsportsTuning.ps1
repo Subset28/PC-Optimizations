@@ -107,16 +107,51 @@ foreach ($adapter in $adapters) {
 }
 
 # 8. Power Scheme Import & Activation
-Write-Host "`n[8/8] Checking Blaster Boy 28 Power Plan..." -ForegroundColor Yellow
+Write-Host "`n[8/10] Checking & Tuning Blaster Boy 28 Power Plan..." -ForegroundColor Yellow
 $powFile = Join-Path $PSScriptRoot "Blaster_Boy_28.pow"
+$planGuid = "fb63eccd-626c-4575-b57c-8641a8366117"
 if (Test-Path $powFile) {
     $existing = powercfg /list | Select-String "Blaster Boy 28"
     if (-not $existing) {
         Write-Host "  -> Importing Blaster Boy 28 power plan..." -ForegroundColor Cyan
-        powercfg -import $powFile
+        powercfg -import $powFile $planGuid
     } else {
         Write-Host "  -> Blaster Boy 28 plan already registered." -ForegroundColor Green
     }
+}
+
+# 9. Deep CPPC & Zen 2 Hardware Autonomous P-States
+Write-Host "`n[9/10] Applying Deep CPPC2 & Autonomous Hardware Frequency Scaling..." -ForegroundColor Yellow
+$subProc = "54533251-82be-4824-96c1-47b60b740d00"
+$deepSettings = @(
+    @{ Name = "Energy Performance Preference (EPP)"; Guid = "36687f9e-e3a5-4dbf-b1dc-15eb381c6863"; Value = 0 },
+    @{ Name = "Processor Autonomous Mode"; Guid = "8baa4a8a-14c6-4451-8e8b-14bdbd197537"; Value = 1 },
+    @{ Name = "Core Parking Max Cores"; Guid = "ea062031-0e34-4ff1-9b6d-eb1059334028"; Value = 100 },
+    @{ Name = "Core Parking Min Cores"; Guid = "0cc5b647-c1df-4637-891a-dec35c318583"; Value = 100 },
+    @{ Name = "Processor Boost Mode"; Guid = "be337238-0d82-4146-a960-4f3749d470c7"; Value = 2 },
+    @{ Name = "Performance Decrease Policy"; Guid = "40fbefc7-2e9d-4d25-a185-0cfd8574bac6"; Value = 1 },
+    @{ Name = "Performance Increase Policy"; Guid = "465e1f50-b610-473a-ab58-00d1077dc418"; Value = 2 },
+    @{ Name = "Autonomous Activity Window"; Guid = "cfeda3d0-7697-4566-a922-a9086cd49dfa"; Value = 0 }
+)
+foreach ($s in $deepSettings) {
+    powercfg -attributes $subProc $s.Guid -ATTRIB_HIDE 2>$null
+    powercfg -setacvalueindex $planGuid $subProc $s.Guid $s.Value 2>$null
+    Write-Host "  -> $($s.Name) set to $($s.Value)" -ForegroundColor Green
+}
+
+# 10. Esports Network QoS & DSCP Packet Tagging
+Write-Host "`n[10/10] Applying Esports QoS Packet Prioritization (DSCP 46)..." -ForegroundColor Yellow
+$qosRegistry = "HKLM:\SYSTEM\CurrentControlSet\Services\Tcpip\QoS"
+if (-not (Test-Path $qosRegistry)) { New-Item -Path $qosRegistry -Force | Out-Null }
+Set-ItemProperty -Path $qosRegistry -Name "Do not use NLA" -Value "1" -Type String -Force
+
+if (-not (Get-NetQosPolicy -Name "Fortnite-Gaming-QoS" -ErrorAction SilentlyContinue)) {
+    New-NetQosPolicy -Name "Fortnite-Gaming-QoS" -AppPathNameMatchCondition "FortniteClient-Win64-Shipping.exe" -DSCPAction 46 -NetworkProfile All -ErrorAction SilentlyContinue | Out-Null
+    Write-Host "  -> Created NetQosPolicy: Fortnite (DSCP 46 - Expedited Forwarding)" -ForegroundColor Green
+}
+if (-not (Get-NetQosPolicy -Name "Valorant-Gaming-QoS" -ErrorAction SilentlyContinue)) {
+    New-NetQosPolicy -Name "Valorant-Gaming-QoS" -AppPathNameMatchCondition "VALORANT-Win64-Shipping.exe" -DSCPAction 46 -NetworkProfile All -ErrorAction SilentlyContinue | Out-Null
+    Write-Host "  -> Created NetQosPolicy: Valorant (DSCP 46 - Expedited Forwarding)" -ForegroundColor Green
 }
 
 Write-Host "`n==========================================================" -ForegroundColor Cyan

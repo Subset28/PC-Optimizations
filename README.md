@@ -53,10 +53,16 @@ Many online optimization scripts use dangerous tweaks (like disabling Driver Sig
 ### 2. ⚡ The `Blaster Boy 28` Power Plan + Dynamic Switching
 - **The Problem:** Locking all 24 CPU threads at 100% clock speeds 24/7 wastes 40–60W at idle, pushes CPU temps 10–15°C higher, and creates unnecessary fan noise while doing daily tasks.
 - **The Solution:** We implement **Dynamic Energy Switching**. The system idles cool and quiet on **Balanced**. Using Process Lasso's background engine (`processgovernor.exe`), the OS automatically snaps into **`Blaster Boy 28`** the millisecond Fortnite or Valorant launches, and drops back down upon exit.
-- **The Plan Customizations:** Core parking minimum active cores locked to **100%**, Processor Boost Mode set to **Aggressive (2)**, PCIe Link State Power Management (ASPM) set to **Off (0)**, and Disk sleep disabled.
+- **Deep Kernel & CPPC2 Customizations:**
+  - **Energy Performance Preference (EPP = 0):** Commands AMD CPPC2 to request maximum autonomous boost clock responsiveness with 0ms transition latency.
+  - **Hardware Autonomous Mode (`8baa4a8a... = 1`):** Shifts Ryzen Zen 2 clock frequencies at ~1ms hardware speeds rather than the 15–30ms Windows software scheduler slice.
+  - **Core Parking Disabled:** Both Minimum and Maximum Active Cores locked to **100%**, unparking all 12 physical cores and 24 threads.
+  - **Processor Performance Policies:** Boost Mode set to **Aggressive (2)**, Increase Policy set to **Rocket (2)**, and Decrease Policy set to **Rocket (1)** (holds clocks through cutscenes and momentary frame drops).
+  - **PCIe & USB Throttling Disabled:** PCIe Link State Power Management (ASPM) set to **Off (0)** and USB Selective Suspend set to **Disabled (0)** across all root hubs.
 
-### 3. 🌐 Zero-Ping & Network Stack Engineering
+### 3. 🌐 Zero-Ping, Network Stack & Esports QoS Engineering
 - **Wi-Fi Dual-Homing Purged:** Having an active Wi-Fi radio on the same subnet as your Ethernet creates gateway route conflicts and **10–28 ms latency spikes** due to background channel scanning. Disabling the inactive wireless adapter locks local router ping to a flat **0.0 ms** (`<1ms`, 0.31 ms avg).
+- **Esports QoS DSCP 46 Tagging:** Outgoing tick packets from `FortniteClient-Win64-Shipping.exe` and `VALORANT-Win64-Shipping.exe` are tagged with **DSCP 46 (Expedited Forwarding)** via Windows NetQosPolicy, granting them top router priority above all background home network streaming.
 - **Silicon Hardware Checksum Offload:** Line-speed hardware ASIC offloading (`Rx & Tx Enabled`) for IPv4, TCP, and UDP offloads CRC calculations from your CPU.
 - **Anti-Bufferbloat Ring Buffers:** Clamped Transmit Buffers to **128** and Receive Buffers to **512** to prevent outbound packets from waiting in driver queues. Set RSS profile to **`ClosestProcessor`** to keep network interrupts off the game's core.
 
