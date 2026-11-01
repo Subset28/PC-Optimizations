@@ -1,0 +1,21 @@
+# Windows system & explorer artifacts
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+$RECYCLE.BIN/
+
+# Temporary and log files
+*.tmp
+*.temp
+*.log
+log-file.txt
+
+# Crash dumps & traces
+*.dmp
+*.etl
+
+# Editor and IDE directories
+.vscode/
+.idea/
+*.swp
+*~

@@ -88,27 +88,41 @@ On dual-CCD processors (Ryzen 9 3900X, 5900X, 7900X, 7950X), cross-die thread mi
 
 ```
 PC-Optimizations/
-├── 2026_Esports_Stack/                  # 🔥 The Modernized 2026 Tuning Suite
-│   ├── Blaster_Boy_28.pow               # Standalone export of the Blaster Boy 28 power plan
+├── 01_Esports_Stack/                    # 🔥 Modern Flagship Tuning Suite
 │   ├── Apply-EsportsTuning.ps1          # 1-Click automated master tuning script
 │   ├── Verify-AntiCheat.ps1             # Riot Vanguard & EAC compliance audit script
-│   ├── GameConfigs/
-│   │   ├── Fortnite-Competitive.ini     # Optimized GameUserSettings.ini (240 FPS / Zero Lumen)
-│   │   └── Valorant-Competitive.ini     # Optimized GameUserSettings.ini (True Fullscreen / 0 DWM lag)
-│   └── Benchmarks/
-│       └── Fortnite_Creative_Benchmark_Results.md  # Full Intel PresentMon data breakdown
-├── Alchemy Tweaks/                      # Advanced legacy DPC and timer registry tweaks
-├── Ancel/                               # Network and performance batch files
-├── Basic Settings/                      # Essential OS settings notes
-├── Bios Change/                         # BIOS memory timings & SCEWIN scripts
-├── MelodysLowLatencySoftware_v3/        # Standalone latency utilities
-├── RIP Tweaks/                          # Fast-action system registry tweaks
-└── Softwares/                           # Diagnostic tools (LatencyMon, nvidiaProfileInspector, ProcessExplorer)
+│   ├── Blaster_Boy_28.pow               # Standalone export of the Blaster Boy 28 power plan
+│   ├── Benchmarks/
+│   │   └── Fortnite_Creative_Benchmark_Results.md  # Full Intel PresentMon data breakdown
+│   └── GameConfigs/
+│       ├── Fortnite-Competitive.ini     # Optimized GameUserSettings.ini (240 FPS / Zero Lumen)
+│       └── Valorant-Competitive.ini     # Optimized GameUserSettings.ini (True Fullscreen / 0 DWM lag)
+│
+├── 02_Esports_Utilities/                # 🛠️ Categorized Diagnostic & Tuning Software
+│   ├── Diagnostics_and_Monitoring/      # LatencyMon, CapFrameX, HWiNFO64, MouseTester, ProcessExplorer
+│   ├── GPU_and_Drivers/                 # nvidiaProfileInspector, NVSlimmer, MSI_util_v3
+│   ├── Kernel_and_Power/                # PowerSettingsExplorer, PowerRun, PolicyPlus, MemReduct
+│   ├── Input_and_USB/                   # HIDUSBF (USB Polling Rate Overclocking)
+│   └── Network_Tools/                   # DNS Optimizer, Network Tweaker, Benchmark Installers
+│
+├── 03_Guides_and_Documentation/         # 📖 Comprehensive Step-by-Step Manual Guides
+│   ├── Windows_11_Optimization_Guide.md # HAGS, Game Mode, Visual Effects, Storage Sense
+│   ├── NVIDIA_Control_Panel_Guide.md    # Ultra Low Latency, Shader Cache, Color & Display config
+│   ├── BIOS_and_XMP_Guide.md            # Enabling XMP / DOCP / EXPO memory profiles safely
+│   └── YouTube_Tutorials.md             # Curated video walkthroughs and guides
+│
+└── 04_Legacy_Archive/                   # 🗄️ Historical Community Tweaks (2022–2024 Archive)
+    ├── README.md                        # Anti-cheat risk advisory for legacy scripts
+    ├── Alchemy_Tweaks/                  # Historical DPC & timer serialization batch files
+    ├── Ancel_Tweaks/                    # Early network & fullscreen optimization scripts
+    ├── BIOS_and_SCEWIN/                 # AMI BIOS NVRAM variable modification tools
+    ├── Melodys_Low_Latency_v3/          # Visual Basic GUI latency utility
+    └── RIP_Tweaks/                      # Legacy registry tweak packs & emergency fix scripts
 ```
 
 ---
 
-## ⚡ **Quick Start: Applying the 2026 Stack**
+## ⚡ **Quick Start: Applying the Esports Stack**
 
 ### Step 1: Open PowerShell as Administrator
 Right-click your Windows Start button and select **Terminal (Admin)** or **PowerShell (Admin)**.
@@ -116,7 +130,7 @@ Right-click your Windows Start button and select **Terminal (Admin)** or **Power
 ### Step 2: Run the Automated Optimization Script
 ```powershell
 Set-ExecutionPolicy Bypass -Scope Process -Force
-cd "$HOME\Desktop\PC-Optimizations\2026_Esports_Stack"
+cd "$HOME\Desktop\PC-Optimizations\01_Esports_Stack"
 .\Apply-EsportsTuning.ps1
 ```
 *The script will automatically create a Windows System Restore point before applying any changes.*
